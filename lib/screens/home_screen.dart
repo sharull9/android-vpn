@@ -76,8 +76,6 @@ class HomeScreen extends StatelessWidget {
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         //vpn button
         Obx(() => _vpnButton()),
-        _login(),
-
         Obx(
           () => Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -224,25 +222,6 @@ class HomeScreen extends StatelessWidget {
           Obx(() => CountDownTimer(
               startTimer:
                   _controller.vpnState.value == VpnEngine.vpnConnected)),
-        ],
-      );
-
-  Widget _login() => Column(
-        children: [
-          //button
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () => Get.to(() => LoginScreen()),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green),
-                alignment: Alignment.center,
-              ),
-              child: const Text("Login",
-                  style: TextStyle(fontSize: 16, color: Colors.white)),
-            ),
-          ),
         ],
       );
 

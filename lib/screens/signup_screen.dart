@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/screens/home_screen.dart';
-import 'package:vpn_basic_project/screens/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -60,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Log in',
+                                    'Create an account',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 24),
                                   ),
@@ -197,6 +196,69 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 16),
+                                    child: Container(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        autofocus: true,
+                                        autofillHints: [AutofillHints.password],
+                                        style: TextStyle(color: Colors.black),
+                                        decoration: InputDecoration(
+                                          labelText: 'Confirm Password',
+                                          labelStyle:
+                                              TextStyle(color: Colors.black),
+                                          floatingLabelStyle:
+                                              TextStyle(color: Colors.black),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.black45,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          suffixIcon: InkWell(
+                                            focusNode:
+                                                FocusNode(skipTraversal: true),
+                                            child: Icon(
+                                              Icons.visibility_outlined,
+                                              color: Color(0xFF57636C),
+                                              size: 24,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 0, 24),
                                     child: Container(
                                       width: double.infinity,
@@ -241,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   ElevatedButton(
-                                      onPressed: () => Get.to(()=> SignupScreen()),
+                                      onPressed: () => {},
                                       style: ButtonStyle(
                                           // maximumSize: MaterialStateProperty.all<Size>(Size.infinite),
                                           minimumSize:

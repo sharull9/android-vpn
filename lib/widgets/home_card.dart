@@ -19,20 +19,11 @@ class HomeCard extends StatelessWidget {
         width: mq.width * .45,
         child: Column(
           children: [
-            //icon
             icon,
-
-            //for adding some space
             const SizedBox(height: 6),
-
-            //title
             Text(title,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-
-            //for adding some space
             const SizedBox(height: 6),
-
-            //subtitle
             Text(
               subtitle,
               style: TextStyle(

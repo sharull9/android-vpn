@@ -9,10 +9,12 @@ import '../helpers/my_dialogs.dart';
 import '../helpers/pref.dart';
 import '../models/ip_details.dart';
 import '../models/vpn.dart';
+import '../models/vpn_new.dart';
 
 class APIs {
   static Future<List<Vpn>> getVPNServers() async {
     final List<Vpn> vpnList = [];
+    final List<VpnNew> newVpnList = [];
 
     try {
       final res = await get(Uri.parse('http://www.vpngate.net/api/iphone/'));
@@ -29,6 +31,14 @@ class APIs {
           tempJson.addAll({header[j].toString(): list[i][j]});
         }
         vpnList.add(Vpn.fromJson(tempJson));
+      }
+
+      final vpnResonse =
+          await get(Uri.parse('https://cukoo.vercel.app/api/vpn'));
+      final vpnListData = jsonDecode(vpnResonse.body)['vpn'];
+
+      for (var data in vpnListData) {
+        // vpnList.add(VpnNew.fromJson(data));
       }
     } catch (e) {
       MyDialogs.error(msg: e.toString());

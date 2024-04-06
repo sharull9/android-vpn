@@ -28,9 +28,6 @@ class VpnCard extends StatelessWidget {
             controller.vpn.value = vpn;
             Pref.vpn = vpn;
             Get.back();
-
-            // MyDialogs.success(msg: 'Connecting VPN Location...');
-
             if (controller.vpnState.value == VpnEngine.vpnConnected) {
               VpnEngine.stopVpn();
               Future.delayed(
@@ -43,8 +40,6 @@ class VpnCard extends StatelessWidget {
           child: ListTile(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-
-            //flag
             leading: Container(
               padding: EdgeInsets.all(.5),
               decoration: BoxDecoration(
@@ -59,30 +54,12 @@ class VpnCard extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
             ),
-
-            //title
             title: Text(vpn.countryLong),
-
-            //subtitle
             subtitle: Row(
               children: [
-                Icon(Icons.speed_rounded, color: Colors.blue, size: 20),
+                Icon(Icons.bar_chart, color: Colors.blue, size: 20),
                 SizedBox(width: 4),
-                Text(_formatBytes(vpn.speed, 1), style: TextStyle(fontSize: 13))
-              ],
-            ),
-
-            //trailing
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(vpn.numVpnSessions.toString(),
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).lightText)),
-                SizedBox(width: 4),
-                Icon(CupertinoIcons.person_3, color: Colors.blue),
+                Text(vpn.ping, style: TextStyle(fontSize: 13))
               ],
             ),
           ),

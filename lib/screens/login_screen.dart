@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vpn_basic_project/helpers/ad_helper.dart';
+import 'package:vpn_basic_project/helpers/config.dart';
 import 'package:vpn_basic_project/screens/home_screen.dart';
+import 'package:vpn_basic_project/screens/network_test_screen.dart';
 import 'package:vpn_basic_project/screens/signup_screen.dart';
+import 'package:vpn_basic_project/widgets/watch_ad_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +27,35 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(CupertinoIcons.back),
+              padding: EdgeInsets.only(right: 8),
+              onPressed: () {
+                Get.back();
+              }),
+          title: Text(''),
+          actions: [
+            IconButton(
+                padding: EdgeInsets.only(right: 8),
+                onPressed: () {
+                  if (Config.hideAds) {
+                    Get.to(() => NetworkTestScreen());
+                    return;
+                  }
+                  Get.dialog(WatchAdDialog(onComplete: () {
+                    //watch ad to gain reward
+                    AdHelper.showRewardedAd(onComplete: () {
+                      Get.to(() => NetworkTestScreen());
+                    });
+                  }));
+                },
+                icon: Icon(
+                  CupertinoIcons.info,
+                  size: 27,
+                )),
+          ],
+        ),
         key: scaffoldKey,
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -241,7 +275,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   ElevatedButton(
-                                      onPressed: () => Get.to(()=> SignupScreen()),
+                                      onPressed: () =>
+                                          Get.to(() => SignupScreen()),
                                       style: ButtonStyle(
                                           // maximumSize: MaterialStateProperty.all<Size>(Size.infinite),
                                           minimumSize:
@@ -268,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Already have an account? ',
+                                        'Don\'t Have Account? ',
                                         style: TextStyle(color: Colors.black),
                                       ),
                                       InkWell(
@@ -276,9 +311,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         focusColor: Colors.transparent,
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
-                                        onTap: () => Get.to(() => HomeScreen()),
+                                        onTap: () =>
+                                            Get.to(() => SignupScreen()),
                                         child: Text(
-                                          'Sign in here',
+                                          'Create an Account',
                                           style: TextStyle(color: Colors.blue),
                                         ),
                                       ),

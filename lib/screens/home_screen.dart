@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
 
@@ -9,7 +8,6 @@ import '../helpers/ad_helper.dart';
 import '../helpers/config.dart';
 import '../helpers/pref.dart';
 import '../main.dart';
-
 import '../models/vpn_status.dart';
 import '../services/vpn_engine.dart';
 import '../widgets/count_down_timer.dart';
@@ -38,31 +36,27 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                //ad dialog
-
+                Get.to(() => LoginScreen());
+              },
+              icon: Icon(
+                Icons.login,
+                size: 26,
+              )),
+          IconButton(
+              padding: EdgeInsets.only(right: 8),
+              onPressed: () {
                 if (Config.hideAds) {
-                  Get.changeThemeMode(
-                      Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                  Pref.isDarkMode = !Pref.isDarkMode;
+                  Get.to(() => NetworkTestScreen());
                   return;
                 }
 
                 Get.dialog(WatchAdDialog(onComplete: () {
                   //watch ad to gain reward
                   AdHelper.showRewardedAd(onComplete: () {
-                    Get.changeThemeMode(
-                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                    Pref.isDarkMode = !Pref.isDarkMode;
+                    Get.to(() => NetworkTestScreen());
                   });
                 }));
               },
-              icon: Icon(
-                Icons.brightness_medium,
-                size: 26,
-              )),
-          IconButton(
-              padding: EdgeInsets.only(right: 8),
-              onPressed: () => Get.to(() => NetworkTestScreen()),
               icon: Icon(
                 CupertinoIcons.info,
                 size: 27,

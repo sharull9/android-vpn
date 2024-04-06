@@ -5,7 +5,6 @@ import 'package:vpn_basic_project/screens/welcome_screen.dart';
 
 import '../helpers/ad_helper.dart';
 import '../main.dart';
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

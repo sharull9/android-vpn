@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/helpers/ad_helper.dart';
 import 'package:vpn_basic_project/helpers/config.dart';
-import 'package:vpn_basic_project/screens/home_screen.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
 import 'package:vpn_basic_project/screens/network_test_screen.dart';
 import 'package:vpn_basic_project/widgets/watch_ad_dialog.dart';

@@ -1,7 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:vpn_basic_project/firebase_options.dart';
 
 import 'helpers/ad_helper.dart';
 import 'helpers/config.dart';
@@ -14,20 +15,15 @@ late Size mq;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //enter full-screen
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-  //firebase initialization
-  await Firebase.initializeApp();
-
-  //initializing remote config
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Config.initConfig();
-
   await Pref.initializeHive();
-
   await AdHelper.initAds();
 
-  //for setting orientation to portrait only
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((v) {
     runApp(const MyApp());
@@ -36,13 +32,44 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return GetMaterialApp(
       title: 'OpenVpn Demo',
-      home: SplashScreen(),
-
+      home: const SplashScreen(),
+      // routes: {
+      //   '/sign-in': (context) {
+      //     return SignInScreen(
+      //       providers: [
+      //         EmailAuthProvider(),
+      //         GoogleProvider(
+      //             clientId:
+      //                 "8820423924-pqf3hqlh6bh2u7a166dchlst8l1eit12.apps.googleusercontent.com")
+      //       ],
+      //       actions: [
+      //         AuthStateChangeAction<SignedIn>((context, state) {
+      //           Navigator.pushReplacementNamed(context, '/profile');
+      //         }),
+      //       ],
+      //     );
+      //   },
+      //   '/profile': (context) {
+      //     return ProfileScreen(
+      //       providers: [
+      //         EmailAuthProvider(),
+      //         GoogleProvider(
+      //             clientId:
+      //                 "8820423924-pqf3hqlh6bh2u7a166dchlst8l1eit12.apps.googleusercontent.com")
+      //       ],
+      //       actions: [
+      //         SignedOutAction((context) {
+      //           Navigator.pushReplacementNamed(context, '/sign-in');
+      //         }),
+      //       ],
+      //     );
+      //   },
+      // },
       //theme
       theme:
           ThemeData(appBarTheme: AppBarTheme(centerTitle: true, elevation: 3)),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
-import 'package:vpn_basic_project/screens/welcome_screen.dart';
+import 'package:vpn_basic_project/screens/home_screen.dart';
 
 import '../helpers/ad_helper.dart';
 import '../main.dart';
@@ -18,24 +18,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 1500), () {
-      //exit full-screen
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
       AdHelper.precacheInterstitialAd();
       AdHelper.precacheNativeAd();
 
-      //navigate to home
-      Get.off(() => WelcomeScreen());
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (_) => HomeScreen()));
+      // Get.off(() => AuthGate());
+      Get.off(() => HomeScreen());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    //initializing media query (for getting device screen size)
-    mq = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Stack(
         children: [

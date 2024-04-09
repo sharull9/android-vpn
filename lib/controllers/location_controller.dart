@@ -15,4 +15,15 @@ class LocationController extends GetxController {
     vpnList = await APIs.getVPNServers();
     isLoading.value = false;
   }
+
+  // List<VpnNew> newVpnList = Pref.newVpnList;
+
+  final RxBool newIsLoading = false.obs;
+
+  // Future<void> newGetVpnData() async {
+  //   isLoading.value = true;
+  //   newVpnList.clear();
+  //   newVpnList = await APIs.getNewVPNServers();
+  //   isLoading.value = false;
+  // }
 }

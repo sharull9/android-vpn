@@ -2,7 +2,10 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/controllers/login_controller.dart';
+import 'package:vpn_basic_project/models/auth_user.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
 
 import '../controllers/home_controller.dart';
@@ -52,17 +55,17 @@ class HomeScreen extends StatelessWidget {
                 CupertinoIcons.info,
                 size: 27,
               )),
-          // IconButton(
-          //   icon: Icon(
-          //     _logincontroller.currentUser.isLoggedIn == true
-          //         ? Icons.person
-          //         : Icons.login,
-          //     size: 26,
-          //   ),
-          //   onPressed: () {
-          //     Get.to(() => LoginScreen());
-          //   },
-          // ),
+          Consumer<Auth>(builder: (context, user, _) {
+            return IconButton(
+              icon: Icon(
+                user.loggedIn == true ? Icons.person : Icons.login,
+                size: 26,
+              ),
+              onPressed: () {
+                Get.to(() => LoginScreen());
+              },
+            );
+          })
         ],
       ),
       bottomNavigationBar: _changeLocation(context),

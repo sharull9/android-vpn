@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/firebase_options.dart';
 
 import 'helpers/ad_helper.dart';
@@ -25,9 +27,18 @@ Future<void> main() async {
   await AdHelper.initAds();
 
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((v) {
-    runApp(const MyApp());
-  });
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
+    (v) {
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => Auth()),
+          ],
+          child: MyApp(),
+        ),
+      );
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -71,16 +82,17 @@ class MyApp extends StatelessWidget {
       //   },
       // },
       //theme
-      theme:
-          ThemeData(appBarTheme: AppBarTheme(centerTitle: true, elevation: 3)),
-
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(centerTitle: true, elevation: 3),
+      ),
       themeMode: Pref.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-
-      //dark theme
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          appBarTheme: AppBarTheme(centerTitle: true, elevation: 3)),
-
+        brightness: Brightness.dark,
+        appBarTheme: AppBarTheme(
+          centerTitle: true,
+          elevation: 3,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -54,11 +54,11 @@ class HomeScreen extends StatelessWidget {
             },
             icon: Icon(
               Icons.brightness_medium,
-              size: 26,
+              size: 22,
             ),
           ),
           IconButton(
-            padding: EdgeInsets.only(right: 8),
+            padding: EdgeInsets.only(right: 3),
             onPressed: () {
               if (Config.hideAds) {
                 Get.to(() => NetworkTestScreen());
@@ -74,15 +74,15 @@ class HomeScreen extends StatelessWidget {
             },
             icon: Icon(
               CupertinoIcons.info,
-              size: 27,
+              size: 22,
             ),
           ),
           IconButton(
-            padding: EdgeInsets.only(right: 8),
+            padding: EdgeInsets.only(right: 3),
             onPressed: () => Get.to(() => LoginScreen()),
             icon: Icon(
               Icons.login,
-              size: 27,
+              size: 22,
             ),
           ),
         ],

@@ -1,46 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:csv/csv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:vpn_basic_project/helpers/api_routes.dart';
+import 'package:vpn_basic_project/models/location.dart';
 
 import '../helpers/my_dialogs.dart';
 import '../helpers/pref.dart';
 import '../models/ip_details.dart';
-import '../models/vpn.dart';
 
 class APIs {
-  static Future<List<Vpn>> getVPNServers() async {
-    final List<Vpn> vpnList = [];
-
-    try {
-      final res = await get(Uri.parse('http://www.vpngate.net/api/iphone/'));
-      final csvString = res.body.split("#")[1].replaceAll('*', '');
-
-      List<List<dynamic>> list = const CsvToListConverter().convert(csvString);
-
-      final header = list[0];
-
-      for (int i = 1; i < list.length - 1; ++i) {
-        Map<String, dynamic> tempJson = {};
-
-        for (int j = 0; j < header.length; ++j) {
-          tempJson.addAll({header[j].toString(): list[i][j]});
-        }
-        vpnList.add(Vpn.fromJson(tempJson));
-      }
-    } catch (e) {
-      MyDialogs.error(msg: e.toString());
-      log('\ngetVPNServersE: $e');
-    }
-    vpnList.shuffle();
-
-    if (vpnList.isNotEmpty) Pref.vpnList = vpnList;
-
-    return vpnList;
-  }
-
   static Future<void> getIPDetails({required Rx<IPDetails> ipData}) async {
     try {
       final res = await get(Uri.parse('http://ip-api.com/json/'));
@@ -51,5 +21,26 @@ class APIs {
       MyDialogs.error(msg: e.toString());
       log('\ngetIPDetailsE: $e');
     }
+  }
+
+  static Future<List<Location>> getVPNLocations() async {
+    late List<Location> vpnList = [];
+    try {
+      final res = await get(Uri.parse(ApiRoutes.location),
+          headers: {"Authorization": "Bearer " + ApiRoutes.token});
+      final body = jsonDecode(res.body);
+
+      for (int i = 0; i < body['free'].length; ++i) {
+        vpnList.add(Location.fromJson(body['free'][i]));
+      }
+      for (int i = 0; i < body['premium'].length; ++i) {
+        vpnList.add(Location.fromJson(body['premium'][i]));
+      }
+      if (vpnList.isNotEmpty) Pref.locationList = vpnList;
+    } catch (e) {
+      MyDialogs.error(msg: e.toString());
+      log('\ngetIPDetailsE: $e');
+    }
+    return vpnList;
   }
 }

@@ -1,68 +1,41 @@
-class LoggedInUser {
-  late final int? id;
-  late final String? googleId;
-  late final String? name;
-  late final String? email;
-  late final String? accessToken;
-  late final bool? isPremium;
-  late final bool isLoggedIn;
+class User {
+  String name = "";
+  String email = "";
+  String status = "";
+  String role = "";
+  String accessToken = "";
+  bool isPremium = false;
+  String subscriptionId = "";
 
-  LoggedInUser({
-    this.id,
-    this.googleId,
-    this.name,
-    this.email,
-    this.accessToken,
-    this.isPremium = false,
-    this.isLoggedIn = false,
+  User({
+    required this.name,
+    required this.email,
+    required this.status,
+    required this.role,
+    required this.accessToken,
+    required this.isPremium,
+    required this.subscriptionId,
   });
 
-  LoggedInUser.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? 0;
-    googleId = json['googleId'] ?? '';
-    name = json['name'] ?? '';
-    email = json['email'] ?? '';
-    accessToken = json['accessToken'] ?? '';
-    isPremium = json['isPremium'];
-    isLoggedIn = json['isLoggedIn'];
+  User.fromJson(Map<String, dynamic> json) {
+    name = json['name'] ?? "";
+    email = json['email'] ?? "";
+    status = json['status'] ?? "";
+    role = json['role'] ?? "";
+    accessToken = json['access_token'] ?? "";
+    isPremium = json['is_premium'] ?? false;
+    subscriptionId = json['subscription_id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['id'] = id;
-    data['googleId'] = googleId;
-    data['name'] = name;
-    data['email'] = email;
-    data['accessToken'] = accessToken;
-    data['isPremium'] = isPremium;
-    data['isLoggedIn'] = isLoggedIn;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['status'] = this.status;
+    data['role'] = this.role;
+    data['access_token'] = this.accessToken;
+    data['is_premium'] = this.isPremium;
+    data['subscription_id'] = this.subscriptionId;
     return data;
-  }
-}
-
-class UserApi {
-  late final int? id;
-  late final String? googleId;
-  late final String? name;
-  late final String? email;
-  late final String? accessToken;
-  late final bool? isPremium;
-
-  UserApi({
-    this.id,
-    this.googleId,
-    this.name,
-    this.email,
-    this.accessToken,
-    this.isPremium = false,
-  });
-
-  UserApi.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    googleId = json['google_id'];
-    name = json['name'];
-    email = json['email'];
-    accessToken = json['access_token'];
-    isPremium = json['isPremium'];
   }
 }

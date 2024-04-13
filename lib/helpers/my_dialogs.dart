@@ -18,6 +18,8 @@ class MyDialogs {
   }
 
   static showProgress() {
-    Get.dialog(Center(child: CircularProgressIndicator(strokeWidth: 2)));
+    Get.dialog(
+      Center(child: CircularProgressIndicator(strokeWidth: 2)),
+    );
   }
 }

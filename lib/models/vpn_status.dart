@@ -1,5 +1,10 @@
 class VpnStatus {
-  VpnStatus({this.duration, this.lastPacketReceive, this.byteIn, this.byteOut});
+  VpnStatus({
+    this.duration,
+    this.lastPacketReceive,
+    this.byteIn,
+    this.byteOut,
+  });
 
   String? duration;
   String? lastPacketReceive;

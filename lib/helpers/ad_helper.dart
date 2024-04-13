@@ -32,12 +32,12 @@ class AdHelper {
       request: AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          //ad listener
-          ad.fullScreenContentCallback =
-              FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
-            _resetInterstitialAd();
-            precacheInterstitialAd();
-          });
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              _resetInterstitialAd();
+              precacheInterstitialAd();
+            },
+          );
           _interstitialAd = ad;
           _interstitialAdLoaded = true;
         },
@@ -76,13 +76,13 @@ class AdHelper {
       request: AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          //ad listener
-          ad.fullScreenContentCallback =
-              FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
-            onComplete();
-            _resetInterstitialAd();
-            precacheInterstitialAd();
-          });
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              onComplete();
+              _resetInterstitialAd();
+              precacheInterstitialAd();
+            },
+          );
           Get.back();
           ad.show();
         },
@@ -103,22 +103,21 @@ class AdHelper {
     if (Config.hideAds) return;
 
     _nativeAd = NativeAd(
-        adUnitId: Config.nativeAd,
-        listener: NativeAdListener(
-          onAdLoaded: (ad) {
-            log('$NativeAd loaded.');
-            _nativeAdLoaded = true;
-          },
-          onAdFailedToLoad: (ad, error) {
-            _resetNativeAd();
-            log('$NativeAd failed to load: $error');
-          },
-        ),
-        request: const AdRequest(),
-        // Styling
-        nativeTemplateStyle:
-            NativeTemplateStyle(templateType: TemplateType.small))
-      ..load();
+      adUnitId: Config.nativeAd,
+      listener: NativeAdListener(
+        onAdLoaded: (ad) {
+          log('$NativeAd loaded.');
+          _nativeAdLoaded = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          _resetNativeAd();
+          log('$NativeAd failed to load: $error');
+        },
+      ),
+      request: const AdRequest(),
+      nativeTemplateStyle:
+          NativeTemplateStyle(templateType: TemplateType.small),
+    )..load();
   }
 
   static void _resetNativeAd() {
@@ -176,8 +175,6 @@ class AdHelper {
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           Get.back();
-
-          //reward listener
           ad.show(
               onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
             onComplete();
@@ -186,7 +183,6 @@ class AdHelper {
         onAdFailedToLoad: (err) {
           Get.back();
           log('Failed to load an interstitial ad: ${err.message}');
-          // onComplete();
         },
       ),
     );

@@ -13,9 +13,12 @@ class Config {
   };
 
   static Future<void> initConfig() async {
-    await _config.setConfigSettings(RemoteConfigSettings(
+    await _config.setConfigSettings(
+      RemoteConfigSettings(
         fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(minutes: 30)));
+        minimumFetchInterval: const Duration(minutes: 30),
+      ),
+    );
 
     await _config.setDefaults(_defaultValues);
     await _config.fetchAndActivate();
@@ -28,8 +31,6 @@ class Config {
   }
 
   static bool get _showAd => _config.getBool('show_ads');
-
-  //ad ids
   static String get nativeAd => _config.getString('native_ad');
   static String get interstitialAd => _config.getString('interstitial_ad');
   static String get rewardedAd => _config.getString('rewarded_ad');

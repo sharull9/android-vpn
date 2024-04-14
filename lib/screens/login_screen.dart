@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:vpn_basic_project/controllers/login_controller.dart';
+import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _controller = LoginController();
+  final _controller = AuthController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = true;
@@ -78,188 +78,188 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   'Let\'s get started by filling out the form below.',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
+                                      color: Colors.black, fontSize: 14,),
                                 ),
                               ),
                             ],
                           ),
-                          Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 16),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 80,
-                                    child: TextFormField(
-                                      controller: emailController,
-                                      autofocus: true,
-                                      autofillHints: [AutofillHints.email],
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your email';
-                                        }
-                                        if (!EmailValidator.validate(value)) {
-                                          return 'Please enter valid email';
-                                        }
-                                        return null;
-                                      },
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 14),
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Email',
-                                        labelStyle:
-                                            TextStyle(color: Colors.black),
-                                        floatingLabelStyle:
-                                            TextStyle(color: Colors.black),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black45,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                      minLines: null,
-                                      keyboardType: TextInputType.emailAddress,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 16),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 80,
-                                    child: TextFormField(
-                                      controller: passwordController,
-                                      autofocus: true,
-                                      obscureText: passwordVisibility,
-                                      autofillHints: [AutofillHints.password],
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your password';
-                                        }
-                                        return null;
-                                      },
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 14),
-                                      decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        labelStyle:
-                                            TextStyle(color: Colors.black),
-                                        floatingLabelStyle:
-                                            TextStyle(color: Colors.black),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black45,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.red,
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        suffixIcon: InkWell(
-                                          onTap: () => setState(() =>
-                                              passwordVisibility =
-                                                  !passwordVisibility),
-                                          focusNode:
-                                              FocusNode(skipTraversal: true),
-                                          child: Icon(
-                                            !passwordVisibility
-                                                ? Icons.visibility_outlined
-                                                : Icons.visibility_off_outlined,
-                                            color: Color(0xFF57636C),
-                                            size: 24,
-                                          ),
-                                        ),
-                                      ),
-                                      minLines: null,
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      try {} catch (e) {
-                                        log(e.toString());
-                                      }
-                                    }
-                                  },
-                                  style: ButtonStyle(
-                                      minimumSize:
-                                          MaterialStateProperty.all<Size>(
-                                        Size.fromHeight(50),
-                                      ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.blue),
-                                      shadowColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white)),
-                                  child: Text(
-                                    "Sign in",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Form(
+                          //   key: _formKey,
+                          //   child: Column(
+                          //     children: [
+                          //       Padding(
+                          //         padding: EdgeInsetsDirectional.fromSTEB(
+                          //             0, 0, 0, 16),
+                          //         child: Container(
+                          //           width: double.infinity,
+                          //           height: 80,
+                          //           child: TextFormField(
+                          //             controller: emailController,
+                          //             autofocus: true,
+                          //             autofillHints: [AutofillHints.email],
+                          //             validator: (value) {
+                          //               if (value == null || value.isEmpty) {
+                          //                 return 'Please enter your email';
+                          //               }
+                          //               if (!EmailValidator.validate(value)) {
+                          //                 return 'Please enter valid email';
+                          //               }
+                          //               return null;
+                          //             },
+                          //             style: TextStyle(
+                          //                 color: Colors.black, fontSize: 14),
+                          //             obscureText: false,
+                          //             decoration: InputDecoration(
+                          //               labelText: 'Email',
+                          //               labelStyle:
+                          //                   TextStyle(color: Colors.black),
+                          //               floatingLabelStyle:
+                          //                   TextStyle(color: Colors.black),
+                          //               enabledBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.black45,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               focusedBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.blue,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               errorBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.red,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               focusedErrorBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.red,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               filled: true,
+                          //               fillColor: Colors.white,
+                          //             ),
+                          //             minLines: null,
+                          //             keyboardType: TextInputType.emailAddress,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       Padding(
+                          //         padding: EdgeInsetsDirectional.fromSTEB(
+                          //             0, 0, 0, 16),
+                          //         child: Container(
+                          //           width: double.infinity,
+                          //           height: 80,
+                          //           child: TextFormField(
+                          //             controller: passwordController,
+                          //             autofocus: true,
+                          //             obscureText: passwordVisibility,
+                          //             autofillHints: [AutofillHints.password],
+                          //             validator: (value) {
+                          //               if (value == null || value.isEmpty) {
+                          //                 return 'Please enter your password';
+                          //               }
+                          //               return null;
+                          //             },
+                          //             style: TextStyle(
+                          //                 color: Colors.black, fontSize: 14),
+                          //             decoration: InputDecoration(
+                          //               labelText: 'Password',
+                          //               labelStyle:
+                          //                   TextStyle(color: Colors.black),
+                          //               floatingLabelStyle:
+                          //                   TextStyle(color: Colors.black),
+                          //               enabledBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.black45,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               focusedBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.blue,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               errorBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.red,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               focusedErrorBorder: OutlineInputBorder(
+                          //                 borderSide: BorderSide(
+                          //                   color: Colors.red,
+                          //                   width: 2,
+                          //                 ),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(12),
+                          //               ),
+                          //               filled: true,
+                          //               fillColor: Colors.white,
+                          //               suffixIcon: InkWell(
+                          //                 onTap: () => setState(() =>
+                          //                     passwordVisibility =
+                          //                         !passwordVisibility),
+                          //                 focusNode:
+                          //                     FocusNode(skipTraversal: true),
+                          //                 child: Icon(
+                          //                   !passwordVisibility
+                          //                       ? Icons.visibility_outlined
+                          //                       : Icons.visibility_off_outlined,
+                          //                   color: Color(0xFF57636C),
+                          //                   size: 24,
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             minLines: null,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       ElevatedButton(
+                          //         onPressed: () async {
+                          //           if (_formKey.currentState!.validate()) {
+                          //             try {} catch (e) {
+                          //               log(e.toString());
+                          //             }
+                          //           }
+                          //         },
+                          //         style: ButtonStyle(
+                          //             minimumSize:
+                          //                 MaterialStateProperty.all<Size>(
+                          //               Size.fromHeight(50),
+                          //             ),
+                          //             backgroundColor:
+                          //                 MaterialStateProperty.all<Color>(
+                          //                     Colors.blue),
+                          //             shadowColor:
+                          //                 MaterialStateProperty.all<Color>(
+                          //                     Colors.white)),
+                          //         child: Text(
+                          //           "Sign in",
+                          //           style: TextStyle(color: Colors.white),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
@@ -320,7 +320,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/google.svg',
-                                  semanticsLabel: 'My SVG Image',
+                                  semanticsLabel: 'Google Icon',
                                   height: 15,
                                   width: 15,
                                 ),

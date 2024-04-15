@@ -16,12 +16,9 @@ const List<String> scopes = <String>[
 ];
 
 class AuthController extends GetxController {
-  RxBool isLoggedIn = Pref.isLoggedIn.obs;
-  RxBool isPremium = Pref.isPremium.obs;
-  RxDouble expiredAt = Pref.expiredAt.obs;
-  String accessToken = Pref.accessToken;
   final RxBool isLoading = false.obs;
-  User loggedUser = Pref.user;
+  String accessToken =
+      Pref.accessToken.isEmpty ? Config.accessToken : Pref.accessToken;
 
   GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId: Config.googleClientId,
@@ -66,7 +63,7 @@ class AuthController extends GetxController {
       final response = await post(
         Uri.parse(ApiRoutes.login),
         headers: {
-          "Authorization": "Bearer " + Config.accessToken,
+          "Authorization": "Bearer " + accessToken,
         },
         body: jsonEncode(body),
       );
@@ -79,9 +76,9 @@ class AuthController extends GetxController {
           },
         );
         final user = jsonDecode(userResponse.body)['user'];
-        isPremium = user['is_premium'];
-        accessToken = user['access_token'];
-        loggedUser = User.fromJson(user);
+        Pref.isPremium = user['is_premium'];
+        Pref.accessToken = user['access_token'];
+        Pref.user = User.fromJson(user);
         signIn();
       } else {
         MyDialogs.error(msg: result['message']);
@@ -98,30 +95,31 @@ class AuthController extends GetxController {
       googleUser = await _googleSignIn.signIn();
 
       if (googleUser != null) {
-        final body = {
+        final userDetails = {
           "name": googleUser!.displayName,
           "email": googleUser!.email,
           "google_id": googleUser!.id,
         };
         final userResponse = await post(
-          Uri.parse(ApiRoutes.google(googleUser!.id)),
+          Uri.parse(ApiRoutes.google),
           headers: {
-            "Authorization": "Bearer " + Config.accessToken,
+            "Authorization": "Bearer " + accessToken,
           },
-          body: body,
+          body: jsonEncode(userDetails),
         );
         final response = jsonDecode(userResponse.body);
         final user = response['user'];
         if (response['error'] == false) {
           signIn();
-          accessToken = user['access_token'];
-          isPremium = user['is_premium'];
-          loggedUser = User.fromJson(user);
+          Pref.accessToken = user['access_token'];
+          Pref.isPremium = user['is_premium'];
+          Pref.user = User.fromJson(user);
+          Pref.avatar = googleUser!.photoUrl!;
         } else {
           MyDialogs.error(msg: response['message']);
         }
       }
-
+      signIn();
     } catch (error) {
       MyDialogs.error(msg: error.toString());
     } finally {
@@ -130,21 +128,21 @@ class AuthController extends GetxController {
   }
 
   Future<void> checkAccessTokenExpiry() async {
-    if (isLoggedIn.value == true &&
-        expiredAt.value + (216000 * 24) >
+    if (Pref.isLoggedIn == true &&
+        Pref.expiredAt + (216000 * 24) >
             DateTime.now().millisecondsSinceEpoch / 1000) {
       try {
         final response = await get(
           Uri.parse(ApiRoutes.refreshToken),
           headers: {
-            "Authorization": "Bearer " + loggedUser.accessToken,
+            "Authorization": "Bearer " + accessToken,
           },
         );
         final result = jsonDecode(response.body);
         if (result['error'] == true) {
-          accessToken = Config.accessToken;
+          Pref.accessToken = Config.accessToken;
         } else {
-          accessToken = result['access_token'];
+          Pref.accessToken = result['access_token'];
         }
       } catch (error) {
         MyDialogs.error(msg: error.toString());
@@ -153,12 +151,12 @@ class AuthController extends GetxController {
   }
 
   void signIn() {
-    expiredAt.value = DateTime.now().millisecondsSinceEpoch / 1000;
-    isLoggedIn.value = true;
+    Pref.expiredAt = DateTime.now().millisecondsSinceEpoch / 1000;
+    Pref.isLoggedIn = true;
   }
 
-  signOut() {
-    loggedUser = User.fromJson({});
-    isLoggedIn.value = false;
+  void signOut() {
+    Pref.user = User.fromJson({});
+    Pref.isLoggedIn = false;
   }
 }

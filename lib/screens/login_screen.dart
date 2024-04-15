@@ -301,7 +301,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           //   ),
                           // ),
                           ElevatedButton(
-                            onPressed: () async => await _controller.google(),
+                            onPressed: () async {
+                              await _controller.google();
+                              Get.to(() => HomeScreen());
+                            },
                             style: ButtonStyle(
                               maximumSize: MaterialStateProperty.all<Size>(
                                   Size.infinite),

@@ -42,7 +42,7 @@ class APIs {
       if (vpnList.isNotEmpty) Pref.locationList = vpnList;
     } catch (e) {
       MyDialogs.error(msg: e.toString());
-      log('\ngetIPDetailsE: $e');
+      log('\getVpnLocation: $e');
     }
     return vpnList;
   }

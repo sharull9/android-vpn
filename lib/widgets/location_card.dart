@@ -25,7 +25,7 @@ class LocationCard extends StatelessWidget {
         onTap: () {
           controller.location.value = location;
 
-          if (location.category == "PREMIUM") {
+          if (location.category == "PREMIUM" && Pref.isPremium == false) {
             return MyDialogs.info(msg: 'Please Upgrade Your Plan');
           }
 

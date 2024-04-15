@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
 import 'package:vpn_basic_project/screens/profile_screen.dart';
 
@@ -11,7 +9,6 @@ import '../helpers/ad_helper.dart';
 import '../helpers/config.dart';
 import '../helpers/pref.dart';
 import '../main.dart';
-
 import '../models/vpn_status.dart';
 import '../services/vpn_engine.dart';
 import '../widgets/count_down_timer.dart';
@@ -24,7 +21,6 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final _controller = Get.put(HomeController());
-  final _authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +37,20 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              if (Config.hideAds) {
+              if (Config.hideAds == false) {
                 Get.changeThemeMode(
                     Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
                 Pref.isDarkMode = !Pref.isDarkMode;
               } else {
-                Get.dialog(WatchAdDialog(onComplete: () {
-                  AdHelper.showRewardedAd(onComplete: () {
-                    Get.changeThemeMode(
-                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                    Pref.isDarkMode = !Pref.isDarkMode;
-                  });
-                }));
+                Get.dialog(WatchAdDialog(
+                  onComplete: () {
+                    AdHelper.showRewardedAd(onComplete: () {
+                      Get.changeThemeMode(
+                          Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                      Pref.isDarkMode = !Pref.isDarkMode;
+                    });
+                  },
+                ));
               }
             },
             icon: Icon(
@@ -80,35 +78,30 @@ class HomeScreen extends StatelessWidget {
               size: 22,
             ),
           ),
-          Obx(
-            () => IconButton(
-              padding: EdgeInsets.only(right: 3),
-              onPressed: () {
-                if (_authController.isLoggedIn.value) {
-                  Get.to(() => ProfileScreen());
-                } else {
-                  Get.to(() => LoginScreen());
-                }
-              },
-              icon: Icon(
-                _authController.isLoggedIn.value ? Icons.person : Icons.login,
-                size: 22,
-              ),
+          IconButton(
+            padding: EdgeInsets.only(right: 3),
+            onPressed: () =>
+                Get.to(() => Pref.isLoggedIn ? ProfileScreen() : LoginScreen()),
+            icon: Icon(
+              Pref.isLoggedIn ? Icons.person : Icons.login,
+              size: 22,
             ),
-          )
+          ),
         ],
       ),
 
       bottomNavigationBar: _changeLocation(context),
 
-      body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Obx(() => _vpnButton()),
-        Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //country flag
-              HomeCard(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Obx(() => _vpnButton()),
+          Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //country flag
+                HomeCard(
                   title: _controller.location.value.cityName.isEmpty
                       ? 'Country'
                       : _controller.location.value.cityName,
@@ -125,10 +118,11 @@ class HomeScreen extends StatelessWidget {
                         ? null
                         : AssetImage(
                             'assets/flags/${_controller.location.value.countryCode.toLowerCase()}.png'),
-                  )),
+                  ),
+                ),
 
-              //ping time
-              HomeCard(
+                //ping time
+                HomeCard(
                   title: _controller.server.value.ping.isEmpty
                       ? '100 ms'
                       : '${_controller.server.value.ping} ms',
@@ -138,47 +132,54 @@ class HomeScreen extends StatelessWidget {
                     backgroundColor: Colors.orange,
                     child: Icon(Icons.equalizer_rounded,
                         size: 30, color: Colors.white),
-                  )),
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        StreamBuilder<VpnStatus?>(
+          StreamBuilder<VpnStatus?>(
             initialData: VpnStatus(),
             stream: VpnEngine.vpnStatusSnapshot(),
             builder: (context, snapshot) => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //download
-                    HomeCard(
-                        title: '${snapshot.data?.byteIn ?? '0 kbps'}',
-                        subtitle: 'DOWNLOAD',
-                        icon: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.lightGreen,
-                          child: Icon(Icons.arrow_downward_rounded,
-                              size: 30, color: Colors.white),
-                        )),
-
-                    //upload
-                    HomeCard(
-                        title: '${snapshot.data?.byteOut ?? '0 kbps'}',
-                        subtitle: 'UPLOAD',
-                        icon: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.blue,
-                          child: Icon(Icons.arrow_upward_rounded,
-                              size: 30, color: Colors.white),
-                        )),
-                  ],
-                ))
-      ]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                HomeCard(
+                  title: '${snapshot.data?.byteIn ?? '0 kbps'}',
+                  subtitle: 'DOWNLOAD',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.lightGreen,
+                    child: Icon(
+                      Icons.arrow_downward_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                HomeCard(
+                  title: '${snapshot.data?.byteOut ?? '0 kbps'}',
+                  subtitle: 'UPLOAD',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.blue,
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   //vpn button
   Widget _vpnButton() => Column(
         children: [
-          //button
           Semantics(
             button: true,
             child: InkWell(
@@ -218,10 +219,11 @@ class HomeScreen extends StatelessWidget {
                         Text(
                           _controller.getButtonText,
                           style: TextStyle(
-                              fontSize: 12.5,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
-                        )
+                            fontSize: 12.5,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ],
                     ),
                   ),

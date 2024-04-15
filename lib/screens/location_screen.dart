@@ -19,16 +19,13 @@ class LocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_controller.vpnLocation.isEmpty) _controller.getVPNLocation();
-
     _adController.ad = AdHelper.loadNativeAd(adController: _adController);
 
     return Obx(
       () => Scaffold(
-        //app bar
         appBar: AppBar(
           title: Text('VPN Locations (${_controller.vpnLocation.length})'),
         ),
-
         bottomNavigationBar:
             _adController.ad != null && _adController.adLoaded.isTrue
                 ? SafeArea(

@@ -23,6 +23,9 @@ class Pref {
   static bool get isPremium => _box.get('isPremium') ?? false;
   static set isPremium(bool v) => _box.put('isPremium', v);
 
+  static String get avatar => _box.get('avatar') ?? "";
+  static set avatar(String v) => _box.put('avatar', v);
+
   static String get accessToken =>
       _box.get('accessToken') ?? Config.accessToken;
   static set accessToken(String v) => _box.put('accessToken', v);

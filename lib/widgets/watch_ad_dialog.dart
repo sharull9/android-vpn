@@ -5,13 +5,21 @@ import 'package:get/get.dart';
 class WatchAdDialog extends StatelessWidget {
   final VoidCallback onComplete;
 
-  const WatchAdDialog({super.key, required this.onComplete});
+  const WatchAdDialog({
+    super.key,
+    required this.onComplete,
+    required this.title,
+    required this.description,
+  });
+
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text('Change Theme'),
-      content: Text('Watch an Ad to Change App Theme.'),
+      title: Text(title),
+      content: Text(description),
       actions: [
         CupertinoDialogAction(
             isDefaultAction: true,

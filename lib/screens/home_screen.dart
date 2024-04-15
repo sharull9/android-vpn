@@ -37,15 +37,19 @@ class HomeScreen extends StatelessWidget {
                   Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
               Pref.isDarkMode = !Pref.isDarkMode;
             } else {
-              Get.dialog(WatchAdDialog(
-                onComplete: () {
-                  AdHelper.showRewardedAd(onComplete: () {
-                    Get.changeThemeMode(
-                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                    Pref.isDarkMode = !Pref.isDarkMode;
-                  });
-                },
-              ));
+              Get.dialog(
+                WatchAdDialog(
+                  title: 'Change Theme',
+                  description: 'Watch an Ad to Change App Theme.',
+                  onComplete: () {
+                    AdHelper.showRewardedAd(onComplete: () {
+                      Get.changeThemeMode(
+                          Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                      Pref.isDarkMode = !Pref.isDarkMode;
+                    });
+                  },
+                ),
+              );
             }
           },
           icon: Icon(
@@ -61,11 +65,15 @@ class HomeScreen extends StatelessWidget {
                 Get.to(() => NetworkTestScreen());
               } else {
                 Get.dialog(
-                  WatchAdDialog(onComplete: () {
-                    AdHelper.showRewardedAd(onComplete: () {
-                      Get.to(() => NetworkTestScreen());
-                    });
-                  }),
+                  WatchAdDialog(
+                    title: 'Network Info',
+                    description: 'Watch an Ad to get your Network Information.',
+                    onComplete: () {
+                      AdHelper.showRewardedAd(onComplete: () {
+                        Get.to(() => NetworkTestScreen());
+                      });
+                    },
+                  ),
                 );
               }
             },

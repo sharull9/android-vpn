@@ -30,34 +30,32 @@ class HomeScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      //app bar
       appBar: AppBar(
-        leading: Icon(CupertinoIcons.home),
-        title: Text('Free OpenVPN'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (Config.hideAds == false) {
-                Get.changeThemeMode(
-                    Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                Pref.isDarkMode = !Pref.isDarkMode;
-              } else {
-                Get.dialog(WatchAdDialog(
-                  onComplete: () {
-                    AdHelper.showRewardedAd(onComplete: () {
-                      Get.changeThemeMode(
-                          Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                      Pref.isDarkMode = !Pref.isDarkMode;
-                    });
-                  },
-                ));
-              }
-            },
-            icon: Icon(
-              Icons.brightness_medium,
-              size: 22,
-            ),
+        title: Text('Mojha VPN'),
+        leading: IconButton(
+          onPressed: () {
+            if (Config.hideAds == false) {
+              Get.changeThemeMode(
+                  Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+              Pref.isDarkMode = !Pref.isDarkMode;
+            } else {
+              Get.dialog(WatchAdDialog(
+                onComplete: () {
+                  AdHelper.showRewardedAd(onComplete: () {
+                    Get.changeThemeMode(
+                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                    Pref.isDarkMode = !Pref.isDarkMode;
+                  });
+                },
+              ));
+            }
+          },
+          icon: Icon(
+            Icons.brightness_medium,
+            size: 22,
           ),
+        ),
+        actions: [
           IconButton(
             padding: EdgeInsets.only(right: 3),
             onPressed: () {
@@ -89,9 +87,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-
       bottomNavigationBar: _changeLocation(context),
-
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -100,7 +96,6 @@ class HomeScreen extends StatelessWidget {
             () => Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //country flag
                 HomeCard(
                   title: _controller.location.value.cityName.isEmpty
                       ? 'Country'

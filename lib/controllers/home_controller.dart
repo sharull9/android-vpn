@@ -26,7 +26,13 @@ class HomeController extends GetxController {
         "Authorization": 'Bearer ' + Config.accessToken,
       },
     );
-    server.value = Server.fromJson(jsonDecode(response.body));
+    final serverResult = jsonDecode(response.body);
+
+    if (serverResult['error'] == true) {
+      return MyDialogs.error(msg: serverResult['message']);
+    }
+
+    server.value = Server.fromJson(serverResult['server']);
     if (server.value.configData.isEmpty) {
       MyDialogs.info(msg: 'Select a Location by clicking \'Change Location\'');
       return;

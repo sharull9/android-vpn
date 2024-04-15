@@ -6,7 +6,6 @@ import 'package:vpn_basic_project/screens/profile_screen.dart';
 
 import '../controllers/home_controller.dart';
 import '../helpers/ad_helper.dart';
-import '../helpers/config.dart';
 import '../helpers/pref.dart';
 import '../main.dart';
 import '../models/vpn_status.dart';
@@ -33,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         title: Text('Mojha VPN'),
         leading: IconButton(
           onPressed: () {
-            if (Pref.isPremium == false) {
+            if (Pref.isPremium == true) {
               Get.changeThemeMode(
                   Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
               Pref.isDarkMode = !Pref.isDarkMode;

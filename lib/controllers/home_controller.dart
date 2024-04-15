@@ -20,44 +20,50 @@ class HomeController extends GetxController {
   final vpnState = VpnEngine.vpnDisconnected.obs;
 
   void connectToVpn() async {
-    if (vpnState.value == VpnEngine.vpnDisconnected) {
-      final response = await get(
-        Uri.parse(ApiRoutes.bestServer(location.value.id)),
-        headers: {
-          "Authorization": 'Bearer ' + Config.accessToken,
-        },
-      );
-      final serverResult = jsonDecode(response.body);
-
-      if (serverResult['error'] == true) {
-        return MyDialogs.error(msg: serverResult['message']);
-      }
-
-      server.value = Server.fromJson(serverResult['server']);
-      if (server.value.configData.isEmpty) {
-        return MyDialogs.info(
-          msg: 'Select a Location by clicking \'Change Location\'',
-        );
-      }
-      final vpnConfig = VpnConfig(
-        country: location.value.cityName,
-        username: server.value.username,
-        password: server.value.password,
-        config: Utf8Decoder().convert(
-          Base64Decoder().convert(server.value.configData),
-        ),
-      );
-      if (Pref.isPremium) {
-        await VpnEngine.startVpn(vpnConfig);
-      } else {
-        AdHelper.showInterstitialAd(
-          onComplete: () async {
-            await VpnEngine.startVpn(vpnConfig);
+    try {
+      if (vpnState.value == VpnEngine.vpnDisconnected) {
+        vpnState.value = "connecting";
+        final response = await get(
+          Uri.parse(ApiRoutes.bestServer(location.value.id)),
+          headers: {
+            "Authorization": 'Bearer ' + Config.accessToken,
           },
         );
+        final serverResult = jsonDecode(response.body);
+
+        if (serverResult['error'] == true) {
+          return MyDialogs.error(msg: serverResult['message']);
+        }
+
+        server.value = Server.fromJson(serverResult['server']);
+        if (server.value.configData.isEmpty) {
+          return MyDialogs.info(
+            msg: 'Select a Location by clicking \'Change Location\'',
+          );
+        }
+        final vpnConfig = VpnConfig(
+          country: location.value.cityName,
+          username: server.value.username,
+          password: server.value.password,
+          config: Utf8Decoder().convert(
+            Base64Decoder().convert(server.value.configData),
+          ),
+        );
+        if (Pref.isPremium) {
+          await VpnEngine.startVpn(vpnConfig);
+        } else {
+          AdHelper.showInterstitialAd(
+            onComplete: () async {
+              await VpnEngine.startVpn(vpnConfig);
+            },
+          );
+        }
+      } else {
+        await VpnEngine.stopVpn();
       }
-    } else {
-      await VpnEngine.stopVpn();
+    } catch (e) {
+      MyDialogs.error(msg: "Unable to connect to server. Try again later.");
+      vpnState.value = "disconnected";
     }
   }
 

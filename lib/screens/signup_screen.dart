@@ -4,16 +4,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/screens/home_screen.dart';
-import 'package:vpn_basic_project/screens/signup_screen.dart';
+import 'package:vpn_basic_project/screens/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   // final _formKey = GlobalKey<FormState>();
   final _controller = AuthController();
   TextEditingController emailController = TextEditingController();
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Sign up'),
         leading: IconButton(
           icon: Icon(CupertinoIcons.back),
           padding: EdgeInsets.only(right: 8),
@@ -338,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Don\'t Have Account? ',
+                                'Already Have an Account? ',
                                 style: TextStyle(color: Colors.black),
                               ),
                               InkWell(
@@ -346,9 +346,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 focusColor: Colors.transparent,
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
-                                onTap: () => Get.to(() => SignupScreen()),
+                                onTap: () => Get.to(() => LoginScreen()),
                                 child: Text(
-                                  'Create an Account',
+                                  'Sign in',
                                   style: TextStyle(color: Colors.blue),
                                 ),
                               ),

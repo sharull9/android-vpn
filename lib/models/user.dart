@@ -20,8 +20,8 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'] ?? "";
     email = json['email'] ?? "";
-    status = json['status'] ?? "";
-    role = json['role'] ?? "";
+    status = json['status'] ?? "active";
+    role = json['role'] ?? "standard";
     accessToken = json['access_token'] ?? "";
     isPremium = json['is_premium'] ?? false;
     subscriptionId = json['subscription_id'] ?? "";

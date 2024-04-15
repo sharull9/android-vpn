@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:vpn_basic_project/controllers/auth_controller.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
+import 'package:vpn_basic_project/screens/profile_screen.dart';
 
 import '../controllers/home_controller.dart';
 import '../helpers/ad_helper.dart';
@@ -22,6 +24,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final _controller = Get.put(HomeController());
+  final _authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +80,22 @@ class HomeScreen extends StatelessWidget {
               size: 22,
             ),
           ),
-          IconButton(
-            padding: EdgeInsets.only(right: 3),
-            onPressed: () => Get.to(() => LoginScreen()),
-            icon: Icon(
-              Icons.login,
-              size: 22,
+          Obx(
+            () => IconButton(
+              padding: EdgeInsets.only(right: 3),
+              onPressed: () {
+                if (_authController.isLoggedIn.value) {
+                  Get.to(() => ProfileScreen());
+                } else {
+                  Get.to(() => LoginScreen());
+                }
+              },
+              icon: Icon(
+                _authController.isLoggedIn.value ? Icons.person : Icons.login,
+                size: 22,
+              ),
             ),
-          ),
+          )
         ],
       ),
 

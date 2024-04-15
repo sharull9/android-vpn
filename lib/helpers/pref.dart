@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:vpn_basic_project/helpers/config.dart';
 import 'package:vpn_basic_project/models/server.dart';
 import 'package:vpn_basic_project/models/location.dart';
 import 'package:vpn_basic_project/models/user.dart';
@@ -16,8 +17,19 @@ class Pref {
   static bool get isDarkMode => _box.get('isDarkMode') ?? false;
   static set isDarkMode(bool v) => _box.put('isDarkMode', v);
 
-  static bool get loggedIn => _box.get('loggedIn') ?? false;
-  static set loggedIn(bool v) => _box.put('loggedIn', v);
+  static bool get isLoggedIn => _box.get('isLoggedIn') ?? false;
+  static set isLoggedIn(bool v) => _box.put('isLoggedIn', v);
+
+  static bool get isPremium => _box.get('isPremium') ?? false;
+  static set isPremium(bool v) => _box.put('isPremium', v);
+
+  static String get accessToken =>
+      _box.get('accessToken') ?? Config.accessToken;
+  static set accessToken(String v) => _box.put('accessToken', v);
+
+  static double get expiredAt =>
+      _box.get('expiredAt') ?? DateTime.now().millisecondsSinceEpoch / 1000;
+  static set expiredAt(double v) => _box.put('expiredAt', v);
 
   static User get user => User.fromJson(jsonDecode(_box.get('user') ?? '{}'));
   static set user(User u) => _box.put('user', jsonEncode(u));

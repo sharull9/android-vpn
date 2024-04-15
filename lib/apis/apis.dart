@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:vpn_basic_project/helpers/api_routes.dart';
+import 'package:vpn_basic_project/helpers/config.dart';
 import 'package:vpn_basic_project/models/location.dart';
 
 import '../helpers/my_dialogs.dart';
@@ -26,8 +27,10 @@ class APIs {
   static Future<List<Location>> getVPNLocations() async {
     late List<Location> vpnList = [];
     try {
-      final res = await get(Uri.parse(ApiRoutes.location),
-          headers: {"Authorization": "Bearer " + ApiRoutes.token});
+      final res = await get(
+        Uri.parse(ApiRoutes.location),
+        headers: {"Authorization": "Bearer " + Config.accessToken},
+      );
       final body = jsonDecode(res.body);
 
       for (int i = 0; i < body['free'].length; ++i) {

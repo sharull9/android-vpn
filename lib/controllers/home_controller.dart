@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:vpn_basic_project/helpers/api_routes.dart';
+import 'package:vpn_basic_project/helpers/config.dart';
 import 'package:vpn_basic_project/models/server.dart';
 import 'package:vpn_basic_project/models/location.dart';
 
@@ -22,7 +23,7 @@ class HomeController extends GetxController {
     final response = await get(
       Uri.parse(ApiRoutes.bestServer(location.value.id)),
       headers: {
-        "Authorization": 'Bearer ' + ApiRoutes.token,
+        "Authorization": 'Bearer ' + Config.accessToken,
       },
     );
     server.value = Server.fromJson(jsonDecode(response.body));

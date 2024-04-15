@@ -155,8 +155,12 @@ class AuthController extends GetxController {
     Pref.isLoggedIn = true;
   }
 
-  void signOut() {
+  void signOut() async {
     Pref.user = User.fromJson({});
+    Pref.avatar = "";
+    if (Pref.avatar.isEmpty) {
+      googleUser = await _googleSignIn.signOut();
+    }
     Pref.isLoggedIn = false;
   }
 }

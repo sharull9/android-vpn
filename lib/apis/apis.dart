@@ -20,7 +20,6 @@ class APIs {
       ipData.value = IPDetails.fromJson(data);
     } catch (e) {
       MyDialogs.error(msg: e.toString());
-      log('\ngetIPDetailsE: $e');
     }
   }
 
@@ -42,7 +41,6 @@ class APIs {
       if (vpnList.isNotEmpty) Pref.locationList = vpnList;
     } catch (e) {
       MyDialogs.error(msg: e.toString());
-      log('\getVpnLocation: $e');
     }
     return vpnList;
   }

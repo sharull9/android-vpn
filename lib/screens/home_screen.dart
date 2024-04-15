@@ -24,7 +24,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///Add listener to update vpn state
     VpnEngine.vpnStageSnapshot().listen((event) {
       _controller.vpnState.value = event;
     });
@@ -34,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         title: Text('Mojha VPN'),
         leading: IconButton(
           onPressed: () {
-            if (Config.hideAds == false) {
+            if (Pref.isPremium == false) {
               Get.changeThemeMode(
                   Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
               Pref.isDarkMode = !Pref.isDarkMode;
@@ -59,7 +58,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             padding: EdgeInsets.only(right: 3),
             onPressed: () {
-              if (Config.hideAds) {
+              if (Pref.isPremium) {
                 Get.to(() => NetworkTestScreen());
               } else {
                 Get.dialog(
@@ -115,8 +114,6 @@ class HomeScreen extends StatelessWidget {
                             'assets/flags/${_controller.location.value.countryCode.toLowerCase()}.png'),
                   ),
                 ),
-
-                //ping time
                 HomeCard(
                   title: _controller.server.value.ping.isEmpty
                       ? '100 ms'
@@ -125,8 +122,11 @@ class HomeScreen extends StatelessWidget {
                   icon: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.orange,
-                    child: Icon(Icons.equalizer_rounded,
-                        size: 30, color: Colors.white),
+                    child: Icon(
+                      Icons.equalizer_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -172,7 +172,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //vpn button
   Widget _vpnButton() => Column(
         children: [
           Semantics(
@@ -185,32 +184,31 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _controller.getButtonColor.withOpacity(.1)),
+                  shape: BoxShape.circle,
+                  color: _controller.getButtonColor.withOpacity(.1),
+                ),
                 child: Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _controller.getButtonColor.withOpacity(.3)),
+                    shape: BoxShape.circle,
+                    color: _controller.getButtonColor.withOpacity(.3),
+                  ),
                   child: Container(
                     width: mq.height * .14,
                     height: mq.height * .14,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _controller.getButtonColor),
+                      shape: BoxShape.circle,
+                      color: _controller.getButtonColor,
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //icon
                         Icon(
                           Icons.power_settings_new,
                           size: 28,
                           color: Colors.white,
                         ),
-
                         SizedBox(height: 4),
-
-                        //text
                         Text(
                           _controller.getButtonText,
                           style: TextStyle(
@@ -226,14 +224,16 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          //connection status label
           Container(
-            margin:
-                EdgeInsets.only(top: mq.height * .015, bottom: mq.height * .02),
+            margin: EdgeInsets.only(
+              top: mq.height * .015,
+              bottom: mq.height * .02,
+            ),
             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
             decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(15)),
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(15),
+            ),
             child: Text(
               _controller.vpnState.value == VpnEngine.vpnDisconnected
                   ? 'Not Connected'
@@ -241,52 +241,48 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 12.5, color: Colors.white),
             ),
           ),
-
-          //count down timer
-          Obx(() => CountDownTimer(
-              startTimer:
-                  _controller.vpnState.value == VpnEngine.vpnConnected)),
+          Obx(
+            () => CountDownTimer(
+                startTimer:
+                    _controller.vpnState.value == VpnEngine.vpnConnected),
+          ),
         ],
       );
 
-  //bottom nav to change location
   Widget _changeLocation(BuildContext context) => SafeArea(
-          child: Semantics(
-        button: true,
-        child: InkWell(
-          onTap: () => Get.to(() => LocationScreen()),
-          child: Container(
+        child: Semantics(
+          button: true,
+          child: InkWell(
+            onTap: () => Get.to(() => LocationScreen()),
+            child: Container(
               color: Theme.of(context).bottomNav,
               padding: EdgeInsets.symmetric(horizontal: mq.width * .04),
               height: 60,
               child: Row(
                 children: [
-                  //icon
                   Icon(CupertinoIcons.globe, color: Colors.white, size: 28),
-
-                  //for adding some space
                   SizedBox(width: 10),
-
-                  //text
                   Text(
                     'Change Location',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-
-                  //for covering available spacing
                   Spacer(),
-
-                  //icon
                   CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.keyboard_arrow_right_rounded,
-                        color: Colors.blue, size: 26),
-                  )
+                    child: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Colors.blue,
+                      size: 26,
+                    ),
+                  ),
                 ],
-              )),
+              ),
+            ),
+          ),
         ),
-      ));
+      );
 }

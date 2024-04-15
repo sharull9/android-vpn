@@ -1,10 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'helpers/ad_helper.dart';
-import 'helpers/config.dart';
 import 'helpers/pref.dart';
 import 'screens/splash_screen.dart';
 

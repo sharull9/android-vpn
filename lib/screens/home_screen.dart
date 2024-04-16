@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/screens/login_screen.dart';
 import 'package:vpn_basic_project/screens/profile_screen.dart';
+import 'package:vpn_basic_project/screens/subscription_screen.dart';
 
 import '../controllers/home_controller.dart';
 import '../helpers/ad_helper.dart';
@@ -69,9 +70,11 @@ class HomeScreen extends StatelessWidget {
                     title: 'Network Info',
                     description: 'Watch an Ad to get your Network Information.',
                     onComplete: () {
-                      AdHelper.showRewardedAd(onComplete: () {
-                        Get.to(() => NetworkTestScreen());
-                      });
+                      AdHelper.showRewardedAd(
+                        onComplete: () {
+                          Get.to(() => NetworkTestScreen());
+                        },
+                      );
                     },
                   ),
                 );
@@ -86,6 +89,14 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: 3),
             onPressed: () =>
                 Get.to(() => Pref.isLoggedIn ? ProfileScreen() : LoginScreen()),
+            icon: Icon(
+              Pref.isLoggedIn ? Icons.person : Icons.login,
+              size: 22,
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.only(right: 3),
+            onPressed: () => Get.to(() => SubscriptionScreen()),
             icon: Icon(
               Pref.isLoggedIn ? Icons.person : Icons.login,
               size: 22,

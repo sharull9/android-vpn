@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:vpn_basic_project/helpers/pref.dart';
 
@@ -20,7 +18,6 @@ class Config {
     "interstitial_ad": "ca-app-pub-3940256099942544/1033173712",
     "native_ad": "ca-app-pub-3940256099942544/2247696110",
     "rewarded_ad": "ca-app-pub-3940256099942544/5224354917",
-    "show_ads": true
   };
 
   static Future<void> initConfig() async {
